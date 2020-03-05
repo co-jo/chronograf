@@ -3,7 +3,7 @@ import AJAX from 'src/utils/ajax'
 import {Namespace} from 'src/types'
 import {TimeSeriesResponse} from 'src/types/series'
 import {ServerLogConfig} from 'src/types/logs'
-import {buildFindMeasurementQuery} from 'src/logs/utils'
+import {buildFindMeasurementQuery, buildFindMeasurementsQuery} from 'src/logs/utils'
 
 export const executeQueryAsync = async (
   proxyLink: string,
@@ -50,6 +50,14 @@ export const updateLogConfig = async (
     console.error(error)
     throw error
   }
+}
+
+export const getMeasurements = async (
+  proxyLink: string,
+  namespace: Namespace
+): Promise<TimeSeriesResponse> => {
+  const query = buildFindMeasurementsQuery(namespace)
+  return executeQueryAsync(proxyLink, namespace, query)
 }
 
 export const getSyslogMeasurement = async (

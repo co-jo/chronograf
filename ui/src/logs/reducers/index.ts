@@ -26,6 +26,7 @@ import {LogsState, SearchStatus} from 'src/types/logs'
 export const defaultState: LogsState = {
   currentSource: null,
   currentNamespaces: [],
+  currentMeasurements: [],
   timeRange: {
     upper: null,
     lower: 'now() - 1m',
@@ -38,6 +39,7 @@ export const defaultState: LogsState = {
     backward: defaultTableData,
   },
   currentNamespace: null,
+  currentMeasurement: null,
   histogramQueryConfig: null,
   tableQueryConfig: null,
   tableData: {columns: [], values: []},
@@ -202,6 +204,8 @@ export default (state: LogsState = defaultState, action: Action) => {
       return {...state, currentSource: action.payload.source}
     case ActionTypes.SetNamespaces:
       return {...state, currentNamespaces: action.payload.namespaces}
+    case ActionTypes.SetMeasurements:
+      return {...state, currentMeasurements: action.payload.measurements}
     case ActionTypes.SetTimeBounds:
       const {upper, lower} = action.payload.timeBounds
       return {...state, timeRange: {...state.timeRange, upper, lower}}
@@ -213,6 +217,8 @@ export default (state: LogsState = defaultState, action: Action) => {
       return {...state, timeRange: {...state.timeRange, timeOption}}
     case ActionTypes.SetNamespace:
       return {...state, currentNamespace: action.payload.namespace}
+    case ActionTypes.SetMeasurement:
+      return {...state, currentMeasurement: action.payload.measurement}
     case ActionTypes.SetHistogramQueryConfig:
       return {...state, histogramQueryConfig: action.payload.queryConfig}
     case ActionTypes.SetHistogramData:

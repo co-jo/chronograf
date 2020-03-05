@@ -2,7 +2,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import uuid from 'uuid'
 import {Filter} from 'src/types/logs'
-import {TimeRange, Namespace, QueryConfig} from 'src/types'
+import {TimeRange, Namespace, Measurement, QueryConfig} from 'src/types'
 import {NULL_STRING} from 'src/shared/constants/queryFillOptions'
 import {getDeep} from 'src/utils/wrappers'
 import {
@@ -253,7 +253,7 @@ export function buildLogQuery(
   if (!_.isEmpty(filters)) {
     condition = `${condition} AND ${filtersClause(filters)}`
   }
-
+  
   return `${select}${condition}${dimensions}${fillClause}`
 }
 
@@ -281,7 +281,8 @@ const createGroupBy = (range: TimeRange) => {
 
 export const buildHistogramQueryConfig = (
   namespace: Namespace,
-  range: TimeRange
+  range: TimeRange,
+  measurement: Measurement
 ): QueryConfig => {
   const id = uuid.v4()
   const {database, retentionPolicy} = namespace
@@ -293,17 +294,18 @@ export const buildHistogramQueryConfig = (
     database,
     retentionPolicy,
     groupBy: createGroupBy(range),
+    measurement: measurement.text,
     fields: histogramFields,
   }
 }
 
 export const buildTableQueryConfig = (
   namespace: Namespace,
-  range: TimeRange
+  range: TimeRange,
+  measurement: Measurement
 ): QueryConfig => {
   const id = uuid.v4()
   const {database, retentionPolicy} = namespace
-
   return {
     ...defaultQueryConfig,
     id,
@@ -311,6 +313,7 @@ export const buildTableQueryConfig = (
     database,
     retentionPolicy,
     groupBy: {tags: []},
+    measurement: measurement.text,
     fields: tableFields,
     fill: null,
   }
@@ -355,6 +358,11 @@ export const parseHistogramQueryResponse = (
 export const formatTime = (time: number): string => {
   return moment(time).format(DEFAULT_TIME_FORMAT)
 }
+
+export const buildFindMeasurementsQuery = (
+  namespace: Namespace
+) =>
+  `SHOW MEASUREMENTS ON "${namespace.database}"`
 
 export const buildFindMeasurementQuery = (
   namespace: Namespace,

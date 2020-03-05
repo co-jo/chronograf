@@ -83,6 +83,10 @@ export interface Namespace {
   retentionPolicy: string
 }
 
+export interface Measurement {
+  text: string
+}
+
 export interface Status {
   loading?: boolean
   error?: string

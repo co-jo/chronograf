@@ -2,7 +2,7 @@ import _ from 'lodash'
 import {Dispatch} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
-import {Source, Namespace, QueryConfig} from 'src/types'
+import {Source, Namespace, Measurement, QueryConfig} from 'src/types'
 import {getSource} from 'src/shared/apis'
 import {getDatabasesWithRetentionPolicies} from 'src/shared/apis/databases'
 import {
@@ -19,6 +19,7 @@ import {
   getLogConfig as getLogConfigAJAX,
   updateLogConfig as updateLogConfigAJAX,
   getSyslogMeasurement,
+  getMeasurements,
 } from 'src/logs/api'
 
 import {
@@ -50,10 +51,12 @@ type GetState = () => State
 export enum ActionTypes {
   SetSource = 'LOGS_SET_SOURCE',
   SetNamespaces = 'LOGS_SET_NAMESPACES',
+  SetMeasurements = 'LOGS_SET_MEASUREMENTS',
   SetTimeBounds = 'LOGS_SET_TIMEBOUNDS',
   SetTimeWindow = 'LOGS_SET_TIMEWINDOW',
   SetTimeMarker = 'LOGS_SET_TIMEMARKER',
   SetNamespace = 'LOGS_SET_NAMESPACE',
+  SetMeasurement = 'LOGS_SET_MEASUREMENT',
   SetHistogramQueryConfig = 'LOGS_SET_HISTOGRAM_QUERY_CONFIG',
   SetHistogramData = 'LOGS_SET_HISTOGRAM_DATA',
   SetTableQueryConfig = 'LOGS_SET_TABLE_QUERY_CONFIG',
@@ -297,13 +300,29 @@ export interface SetSearchStatusAction {
   }
 }
 
+export interface SetMeasurementAction {
+  type: ActionTypes.SetMeasurement
+  payload: {
+    measurement: Measurement
+  }
+}
+
+export interface SetMeasurementsAction {
+  type: ActionTypes.SetMeasurements
+  payload: {
+    measurements: Measurement[]
+  }
+}
+
 export type Action =
   | SetSourceAction
   | SetNamespacesAction
+  | SetMeasurementsAction
   | SetTimeBoundsAction
   | SetTimeWindowAction
   | SetTimeMarkerAction
   | SetNamespaceAction
+  | SetMeasurementAction
   | SetHistogramQueryConfigAction
   | SetHistogramDataAction
   | SetTableData
@@ -355,6 +374,9 @@ const getTimeRange = (state: State): TimeRange | null =>
 
 const getNamespace = (state: State): Namespace | null =>
   getDeep<Namespace | null>(state, 'logs.currentNamespace', null)
+
+const getMeasurement = (state: State): Measurement | null =>
+  getDeep<Measurement| null>(state, 'logs.measurement', null)
 
 const getProxyLink = (state: State): string | null =>
   getDeep<string | null>(state, 'logs.currentSource.links.proxy', null)
@@ -671,6 +693,8 @@ export const setHistogramQueryConfigAsync = () => async (
   )
   const timeRange = getDeep<TimeRange | null>(state, 'logs.timeRange', null)
 
+  const measurement = getDeep<Measurement | null>(state, 'logs.currentMeasurement', null)
+
   if (timeRange && namespace) {
     const queryTimeRange = {
       upper: timeRange.upper,
@@ -678,7 +702,7 @@ export const setHistogramQueryConfigAsync = () => async (
       seconds: timeRange.seconds,
     }
 
-    const queryConfig = buildHistogramQueryConfig(namespace, queryTimeRange)
+    const queryConfig = buildHistogramQueryConfig(namespace, queryTimeRange, measurement)
 
     dispatch({
       type: ActionTypes.SetHistogramQueryConfig,
@@ -707,9 +731,9 @@ export const setTableQueryConfigAsync = () => async (
     null
   )
   const timeRange = getDeep<TimeRange | null>(state, 'logs.timeRange', null)
-
+  const measurement = getDeep<Measurement | null>(state, 'logs.currentMeasurement', null)
   if (timeRange && namespace) {
-    const queryConfig = buildTableQueryConfig(namespace, timeRange)
+    const queryConfig = buildTableQueryConfig(namespace, timeRange, measurement)
 
     dispatch(setTableQueryConfig(queryConfig))
   }
@@ -919,6 +943,20 @@ export const setNamespaceAsync = (namespace: Namespace) => async (
   ])
 }
 
+export const setMeasurementAsync = (measurement: Measurement) => async (
+  dispatch
+): Promise<void> => {
+  dispatch({
+    type: ActionTypes.SetMeasurement,
+    payload: {measurement},
+  })
+
+  await Promise.all([
+    dispatch(setHistogramQueryConfigAsync()),
+    dispatch(setTableQueryConfigAsync()),
+  ])
+}
+
 export const fetchNamespaceSyslogStatusAsync = (namespace: Namespace) => async (
   dispatch: Dispatch<SetSearchStatusAction>,
   getState: GetState
@@ -942,6 +980,15 @@ export const setNamespaces = (
   type: ActionTypes.SetNamespaces,
   payload: {
     namespaces,
+  },
+})
+
+export const setMeasurements = (
+  measurements: Measurement[]
+): SetMeasurementsAction => ({
+  type: ActionTypes.SetMeasurements,
+  payload: {
+    measurements,
   },
 })
 
@@ -972,6 +1019,36 @@ export const populateNamespacesAsync = (
 
     await Promise.all([
       dispatch(setNamespaceAsync(namespace)),
+      dispatch(fetchNamespaceSyslogStatusAsync(namespace)),
+    ])
+  }
+}
+
+export const populateMeasurementsAsync = () => async (
+    dispatch,
+    getState: GetState
+  ): Promise<void> => {
+
+  const state = getState()
+  const proxyLink = getProxyLink(getState())
+  const namespace = getNamespace(state)
+
+  const response = await getMeasurements(proxyLink, namespace)
+  let result = getDeep<string[]>(response, 'results.0.series.0.values', [])
+  
+  const measurements = result.map(
+    measurement => ({ text: _.head(measurement) })
+  )
+
+  if (measurements && measurements.length > 0) {
+    dispatch(setMeasurements(measurements))
+
+    let defaultMeasurement: Measurement = { text: "syslog" }
+
+    const measurement = defaultMeasurement || measurements[0]
+
+    await Promise.all([
+      dispatch(setMeasurementAsync(measurement)),
       dispatch(fetchNamespaceSyslogStatusAsync(namespace)),
     ])
   }

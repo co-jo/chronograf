@@ -5,7 +5,7 @@ import {
   SeverityColorOptions,
   SeverityLevelOptions,
 } from 'src/logs/constants'
-import {QueryConfig, Namespace, Source} from 'src/types'
+import {QueryConfig, Namespace, Measurement, Source} from 'src/types'
 import {FieldOption} from 'src/types/dashboards'
 import {TimeSeriesValue} from 'src/types/series'
 import {TimeRange} from 'src/types/logs'
@@ -40,6 +40,8 @@ export interface LogsState {
   currentSource: Source | null
   currentNamespaces: Namespace[]
   currentNamespace: Namespace | null
+  currentMeasurements: Measurement[]
+  currentMeasurement: Measurement
   timeRange: TimeRange
   histogramQueryConfig: QueryConfig | null
   histogramData: object[]

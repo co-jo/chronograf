@@ -41,6 +41,7 @@ import {
   Tag,
   Tags,
   TagValues,
+  Measurement,
 } from './queries'
 import {
   NewSource,
@@ -138,4 +139,5 @@ export {
   Layout,
   QueryType,
   QueryUpdateState,
+  Measurement,
 }

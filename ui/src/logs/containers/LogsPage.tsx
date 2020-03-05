@@ -39,11 +39,13 @@ import {
   setTableCustomTimeAsync,
   setTableRelativeTimeAsync,
   getSourceAndPopulateNamespacesAsync,
+  populateMeasurementsAsync,
   setTimeRangeAsync,
   setTimeBounds,
   setTimeWindow,
   setTimeMarker,
   setNamespaceAsync,
+  setMeasurementAsync,
   addFilter,
   removeFilter,
   changeFilter,
@@ -76,7 +78,7 @@ import {SeverityFormatOptions, SEVERITY_SORTING_ORDER} from 'src/logs/constants'
 
 // Types
 import {Greys} from 'src/reusable_ui/types'
-import {Source, Namespace, NotificationAction} from 'src/types'
+import {Source, Namespace, Measurement, NotificationAction} from 'src/types'
 import {
   HistogramData,
   HistogramColor,
@@ -103,12 +105,16 @@ interface Props {
   currentSource: Source | null
   currentNamespaces: Namespace[]
   currentNamespace: Namespace
+  currentMeasurements: Measurement[]
+  currentMeasurement: Measurement
   getSourceAndPopulateNamespaces: (sourceID: string) => void
   getSources: typeof getSourcesAsync
   setTimeRangeAsync: (timeRange: TimeRange) => void
   setTimeBounds: (timeBounds: TimeBounds) => void
   setTimeWindow: (timeWindow: TimeWindow) => void
   setTimeMarker: (timeMarker: TimeMarker) => void
+  setMeasurementAsync: (measurement: Measurement) => void
+  populateMeasurementsAsync: () => void
   setNamespaceAsync: (namespace: Namespace) => void
   setTableRelativeTime: (time: number) => void
   setTableCustomTime: (time: string) => void
@@ -222,6 +228,7 @@ class LogsPage extends Component<Props, State> {
   public async componentDidMount() {
     await this.getSources()
     await this.setCurrentSource()
+    await this.setCurrentMeasurement()
 
     await this.props.getConfig(this.logConfigLink)
 
@@ -341,6 +348,10 @@ class LogsPage extends Component<Props, State> {
         this.props.currentNamespace
       )
     }
+  }
+
+  private setCurrentMeasurement = async () => {
+      return await this.props.populateMeasurementsAsync()
   }
 
   private handleExpandMessage = () => {
@@ -760,6 +771,8 @@ class LogsPage extends Component<Props, State> {
       currentSource,
       currentNamespaces,
       currentNamespace,
+      currentMeasurement,
+      currentMeasurements,
     } = this.props
 
     return (
@@ -768,9 +781,12 @@ class LogsPage extends Component<Props, State> {
         availableSources={sources}
         onChooseSource={this.handleChooseSource}
         onChooseNamespace={this.handleChooseNamespace}
+        onChooseMeasurement={this.handleChooseMeasurement}
         currentSource={currentSource}
         currentNamespaces={currentNamespaces}
         currentNamespace={currentNamespace}
+        currentMeasurement={currentMeasurement}
+        currentMeasurements={currentMeasurements}
         onChangeLiveUpdatingStatus={this.handleChangeLiveUpdatingStatus}
         onShowOptionsOverlay={this.handleToggleOverlay}
       />
@@ -893,6 +909,12 @@ class LogsPage extends Component<Props, State> {
     if (this.isMeasurementInNamespace) {
       this.updateTableData(SearchStatus.UpdatingSource)
     }
+  }
+
+  private handleChooseMeasurement = async (measurement: Measurement) => {
+    await Promise.all([
+      this.props.setMeasurementAsync(measurement),
+    ])
   }
 
   private handleChooseNamespace = async (namespace: Namespace) => {
@@ -1073,8 +1095,10 @@ const mapStateToProps = ({
     newRowsAdded,
     currentSource,
     currentNamespaces,
+    currentMeasurements,
     timeRange,
     currentNamespace,
+    currentMeasurement,
     histogramData,
     tableData,
     filters,
@@ -1092,8 +1116,10 @@ const mapStateToProps = ({
   sources,
   currentSource,
   currentNamespaces,
+  currentMeasurements,
   timeRange,
   currentNamespace,
+  currentMeasurement,
   histogramData,
   tableData,
   filters,
@@ -1118,6 +1144,8 @@ const mapDispatchToProps = {
   setTimeWindow,
   setTimeMarker,
   setNamespaceAsync,
+  setMeasurementAsync,
+  populateMeasurementsAsync,
   executeHistogramQueryAsync,
   clearSearchData,
   setSearchStatus,
