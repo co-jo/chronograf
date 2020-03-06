@@ -145,6 +145,9 @@ const concatMoreLogs = (
   const {backward} = tableInfiniteData
   const vals = [...backward.values, ...values]
 
+  console.log("concatMore")
+  console.log(columns)
+  console.log(vals)
   return {
     ...state,
     tableInfiniteData: {
@@ -170,6 +173,9 @@ const prependMoreLogs = (
 
   const newRowsAdded = vals.length - forward.values.length
 
+  console.log("prependMore")
+  console.log(forward.columns)
+  console.log(vals)
   return {
     ...state,
     newRowsAdded,
@@ -232,6 +238,7 @@ export default (state: LogsState = defaultState, action: Action) => {
     case ActionTypes.SetSearchStatus:
       return {...state, searchStatus: action.payload.searchStatus}
     case ActionTypes.SetTableForwardData:
+      console.log("SetTableDataForward")
       return {
         ...state,
         tableInfiniteData: {
@@ -240,6 +247,7 @@ export default (state: LogsState = defaultState, action: Action) => {
         },
       }
     case ActionTypes.SetTableBackwardData:
+      console.log("SetTableeDataBackward")
       return {
         ...state,
         tableInfiniteData: {

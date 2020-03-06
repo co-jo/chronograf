@@ -4,6 +4,7 @@ import {Namespace} from 'src/types'
 import {TimeSeriesResponse} from 'src/types/series'
 import {ServerLogConfig} from 'src/types/logs'
 import {buildFindMeasurementQuery, buildFindMeasurementsQuery} from 'src/logs/utils'
+import { measurements } from 'src/shared/apis/flux/metaQueries'
 
 export const executeQueryAsync = async (
   proxyLink: string,
@@ -65,5 +66,14 @@ export const getSyslogMeasurement = async (
   namespace: Namespace
 ): Promise<TimeSeriesResponse> => {
   const query = buildFindMeasurementQuery(namespace, 'syslog')
+  return executeQueryAsync(proxyLink, namespace, query)
+}
+
+export const getVariableMeasurement = async (
+  proxyLink: string,
+  namespace: Namespace,
+  measurement: string
+): Promise<TimeSeriesResponse> => {
+  const query = buildFindMeasurementQuery(namespace, measurement)
   return executeQueryAsync(proxyLink, namespace, query)
 }

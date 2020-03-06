@@ -34,47 +34,52 @@ const histogramFields = [
   },
 ]
 
+const tableMeasurementFields = {
+  "pravega-controller": [
+    { alias: 'severity', type: 'field', value: 'severity', },
+    { alias: 'appname', type: 'field', value: 'appname', },
+    { alias: 'class', type: 'field', value: 'class', },
+    { alias: 'thread', type: 'field', value: 'thread', },
+    { alias: 'message', type: 'field', value: 'message', }
+  ],
+  "pravega-operator": [
+    { alias: 'severity', type: 'field', value: 'severity' },
+    { alias: 'appname', type: 'field', value: 'appname' },
+    { alias: 'message', type: 'field', value: 'message' }
+  ],
+  "zookeeper": [
+    { alias: 'severity', type: 'field', value: 'severity' },
+    { alias: 'appname', type: 'field', value: 'appname' },
+    { alias: 'class', type: 'field', value: 'class' },
+    { alias: 'thread', type: 'field', value: 'thread' },
+    { alias: 'message', type: 'field', value: 'message' }
+  ],
+  "zookeeper-operator": [
+    { alias: 'severity', type: 'field', value: 'severity' },
+    { alias: 'appname', type: 'field', value: 'appname' },
+    { alias: 'message', type: 'field', value: 'message' }
+  ],
+  "syslog": [
+    { alias: 'severity', type: 'field', value: 'severity' },
+    { alias: 'timestamp', type: 'field', value: 'timestamp' },
+    { alias: 'message', type: 'field', value: 'message' },
+    { alias: 'facility', type: 'field', value: 'facility' },
+    { alias: 'procid', type: 'field', value: 'procid' },
+    { alias: 'appname', type: 'field', value: 'appname' },
+    { alias: 'hostname', type: 'field', value: 'hostname' },
+    { alias: 'host', type: 'field', value: 'host' },
+  ]
+}
+
 const tableFields = [
-  {
-    alias: 'severity',
-    type: 'field',
-    value: 'severity',
-  },
-  {
-    alias: 'timestamp',
-    type: 'field',
-    value: 'timestamp',
-  },
-  {
-    alias: 'message',
-    type: 'field',
-    value: 'message',
-  },
-  {
-    alias: 'facility',
-    type: 'field',
-    value: 'facility',
-  },
-  {
-    alias: 'procid',
-    type: 'field',
-    value: 'procid',
-  },
-  {
-    alias: 'appname',
-    type: 'field',
-    value: 'appname',
-  },
-  {
-    alias: 'hostname',
-    type: 'field',
-    value: 'hostname',
-  },
-  {
-    alias: 'host',
-    type: 'field',
-    value: 'host',
-  },
+  { alias: 'severity', type: 'field', value: 'severity', },
+  { alias: 'timestamp', type: 'field', value: 'timestamp', },
+  { alias: 'message', type: 'field', value: 'message', },
+  { alias: 'facility', type: 'field', value: 'facility', },
+  { alias: 'procid', type: 'field', value: 'procid', },
+  { alias: 'appname', type: 'field', value: 'appname', },
+  { alias: 'hostname', type: 'field', value: 'hostname', },
+  { alias: 'host', type: 'field', value: 'host', },
 ]
 
 const defaultQueryConfig = {
@@ -314,6 +319,7 @@ export const buildTableQueryConfig = (
     retentionPolicy,
     groupBy: {tags: []},
     measurement: measurement.text,
+    //fields: _.get(tableMeasurementFields, `${measurement.text}`, tableFields),
     fields: tableFields,
     fill: null,
   }

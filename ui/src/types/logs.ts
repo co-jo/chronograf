@@ -17,6 +17,7 @@ export enum SearchStatus {
   UpdatingTimeBounds = 'UpdatingTimeBounds',
   UpdatingFilters = 'UpdatingFilters',
   UpdatingSource = 'UpdatingSource',
+  UpdatingMeasurement = 'UpdatingMeasurement',
   UpdatingNamespace = 'UpdatingNamespace',
   MeasurementMissing = 'MeasurementMissing',
   Loaded = 'Loaded',

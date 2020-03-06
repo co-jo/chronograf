@@ -12,6 +12,7 @@ import {
   buildInfiniteScrollLogQuery,
   parseHistogramQueryResponse,
 } from 'src/logs/utils'
+import {TableColumnSwitch} from 'src/logs/utils/measurements'
 import {logConfigServerToUI, logConfigUIToServer} from 'src/logs/utils/config'
 import {getDeep} from 'src/utils/wrappers'
 import {
@@ -19,6 +20,7 @@ import {
   getLogConfig as getLogConfigAJAX,
   updateLogConfig as updateLogConfigAJAX,
   getSyslogMeasurement,
+  getVariableMeasurement,
   getMeasurements,
 } from 'src/logs/api'
 
@@ -376,7 +378,7 @@ const getNamespace = (state: State): Namespace | null =>
   getDeep<Namespace | null>(state, 'logs.currentNamespace', null)
 
 const getMeasurement = (state: State): Measurement | null =>
-  getDeep<Measurement| null>(state, 'logs.measurement', null)
+  getDeep<Measurement| null>(state, 'logs.currentMeasurement', null)
 
 const getProxyLink = (state: State): string | null =>
   getDeep<string | null>(state, 'logs.currentSource.links.proxy', null)
@@ -749,6 +751,7 @@ export const fetchOlderChunkAsync = () => async (
   const namespace = getNamespace(state)
   const proxyLink = getProxyLink(state)
   const searchTerm = getSearchTerm(state)
+  const measurement = getMeasurement(state)
   const filters = getFilters(state)
   const params = [namespace, proxyLink, tableQueryConfig]
 
@@ -769,6 +772,7 @@ export const fetchOlderChunkAsync = () => async (
       filters,
       searchTerm
     )
+
     const response = await executeQueryAsync(
       proxyLink,
       namespace,
@@ -777,9 +781,15 @@ export const fetchOlderChunkAsync = () => async (
     const logSeries = getDeep<TableData>(
       response,
       'results.0.series.0',
-      defaultTableData
+      {
+        columns: TableColumnSwitch(measurement),
+        values: []
+      }
     )
 
+    if (!_.isEmpty(response.results[0])) {
+      console.log(response)
+    }
     await dispatch(concatMoreLogs(logSeries))
   } else {
     throw new Error(
@@ -798,6 +808,7 @@ export const fetchNewerChunkAsync = () => async (
   const namespace = getNamespace(state)
   const proxyLink = getProxyLink(state)
   const searchTerm = getSearchTerm(state)
+  const measurement = getMeasurement(state)
   const filters = getFilters(state)
   const params = [namespace, proxyLink, tableQueryConfig]
 
@@ -826,8 +837,15 @@ export const fetchNewerChunkAsync = () => async (
     const logSeries = getDeep<TableData>(
       response,
       'results.0.series.0',
-      defaultTableData
+       {
+        columns: TableColumnSwitch(measurement),
+        values: []
+      }
     )
+
+    if (!_.isEmpty(response.results[0])) {
+      console.log(response)
+    }
 
     await dispatch(prependMoreLogs(logSeries))
   } else {
@@ -974,6 +992,24 @@ export const fetchNamespaceSyslogStatusAsync = (namespace: Namespace) => async (
   }
 }
 
+export const fetchNamespaceVariableStatusAsync = (measurement: Measurement) => async (
+  dispatch: Dispatch<SetSearchStatusAction>,
+  getState: GetState
+) => {
+  try {
+    const proxyLink = getProxyLink(getState())
+    const namespace = getNamespace(getState())
+    const response = await getVariableMeasurement(proxyLink, namespace, measurement.text)
+    const series = getDeep(response, 'results.0.series', [])
+
+    if (_.isEmpty(series)) {
+      await dispatch(setSearchStatus(SearchStatus.MeasurementMissing))
+    }
+  } catch (error) {
+    await dispatch(setSearchStatus(SearchStatus.MeasurementMissing))
+  }
+}
+
 export const setNamespaces = (
   namespaces: Namespace[]
 ): SetNamespacesAction => ({
@@ -1034,24 +1070,18 @@ export const populateMeasurementsAsync = () => async (
   const namespace = getNamespace(state)
 
   const response = await getMeasurements(proxyLink, namespace)
-  let result = getDeep<string[]>(response, 'results.0.series.0.values', [])
+
+  let result = getDeep<string[][]>(response, 'results.0.series.0.values', [["syslog"]])
   
   const measurements = result.map(
     measurement => ({ text: _.head(measurement) })
   )
 
-  if (measurements && measurements.length > 0) {
-    dispatch(setMeasurements(measurements))
-
-    let defaultMeasurement: Measurement = { text: "syslog" }
-
-    const measurement = defaultMeasurement || measurements[0]
-
-    await Promise.all([
-      dispatch(setMeasurementAsync(measurement)),
-      dispatch(fetchNamespaceSyslogStatusAsync(namespace)),
-    ])
-  }
+  await Promise.all([
+    dispatch(setMeasurements(measurements)),
+    dispatch(setMeasurementAsync(_.first(measurements))),
+    dispatch(fetchNamespaceVariableStatusAsync(_.first(measurements))),
+  ])
 }
 
 export const getSourceAndPopulateNamespacesAsync = (sourceID: string) => async (

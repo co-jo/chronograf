@@ -5,6 +5,7 @@ import _ from 'lodash'
 import {connect} from 'react-redux'
 import {AutoSizer} from 'react-virtualized'
 import {withRouter, InjectedRouter} from 'react-router'
+import {TableColumnSwitch} from 'src/logs/utils/measurements'
 
 // Components
 import LogsHeader from 'src/logs/components/LogsHeader'
@@ -53,6 +54,7 @@ import {
   fetchOlderChunkAsync,
   fetchNewerChunkAsync,
   fetchNamespaceSyslogStatusAsync,
+  fetchNamespaceVariableStatusAsync,
   fetchTailAsync,
   flushTailBuffer,
   clearAllTimeBounds,
@@ -146,6 +148,7 @@ interface Props {
   fetchNewerChunkAsync: typeof fetchNewerChunkAsync
   fetchTailAsync: typeof fetchTailAsync
   fetchNamespaceSyslogStatusAsync: typeof fetchNamespaceSyslogStatusAsync
+  fetchNamespaceVariableStatusAsync: typeof fetchNamespaceVariableStatusAsync
   flushTailBuffer: typeof flushTailBuffer
   clearAllTimeBounds: typeof clearAllTimeBounds
   setNextTailLowerBound: typeof setNextTailLowerBound
@@ -601,7 +604,7 @@ class LogsPage extends Component<Props, State> {
       this.props.tableInfiniteData.forward,
       this.tableColumns
     )
-
+   
     const backwardData = applyChangesToTableData(
       this.props.tableInfiniteData.backward,
       this.tableColumns
@@ -912,15 +915,20 @@ class LogsPage extends Component<Props, State> {
   }
 
   private handleChooseMeasurement = async (measurement: Measurement) => {
+    this.updateTableData(SearchStatus.Cleared)
     await Promise.all([
       this.props.setMeasurementAsync(measurement),
+      this.props.fetchNamespaceVariableStatusAsync(measurement),
+      this.handleUpdateColumns(TableColumnSwitch(measurement))
     ])
+    this.updateTableData(SearchStatus.UpdatingMeasurement)
   }
 
   private handleChooseNamespace = async (namespace: Namespace) => {
     this.updateTableData(SearchStatus.Cleared)
 
     await Promise.all([
+      this.props.populateMeasurementsAsync(),
       this.props.setNamespaceAsync(namespace),
       this.props.fetchNamespaceSyslogStatusAsync(namespace),
     ])
@@ -1157,6 +1165,7 @@ const mapDispatchToProps = {
   fetchNewerChunkAsync,
   fetchTailAsync,
   fetchNamespaceSyslogStatusAsync,
+  fetchNamespaceVariableStatusAsync,
   flushTailBuffer,
   clearAllTimeBounds,
   setNextTailLowerBound,

@@ -209,7 +209,7 @@ class LogsTable extends Component<Props, State> {
     if (this.isLoadingTableData) {
       return this.loadingStatus
     }
-
+    
     return (
       <div className="logs-viewer--table-container">
         <AutoSizer>
