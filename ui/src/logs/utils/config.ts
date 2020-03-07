@@ -32,10 +32,14 @@ export const logConfigServerToUI = (
   let severityLevelColors: SeverityLevelColor[]
   const convertedColumns = sortedColumns.map(c => {
     if (c.name === 'severity') {
+      console.log(serverConfig)
       severityFormat = getFormatFromColumn(c)
+      console.log(severityFormat)
       severityLevelColors = getLevelColorsFromColumn(c)
+      console.log(severityLevelColors)
+      console.log("severity")
     }
-
+    
     return columnServerToUI(c)
   })
 

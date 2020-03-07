@@ -5,7 +5,7 @@ import _ from 'lodash'
 import {connect} from 'react-redux'
 import {AutoSizer} from 'react-virtualized'
 import {withRouter, InjectedRouter} from 'react-router'
-import {TableColumnSwitch} from 'src/logs/utils/measurements'
+import {TableColumns} from 'src/logs/utils/columns'
 
 // Components
 import LogsHeader from 'src/logs/components/LogsHeader'
@@ -919,7 +919,8 @@ class LogsPage extends Component<Props, State> {
     await Promise.all([
       this.props.setMeasurementAsync(measurement),
       this.props.fetchNamespaceVariableStatusAsync(measurement),
-      this.handleUpdateColumns(TableColumnSwitch(measurement))
+      // Sets the /logviewer config json.
+      this.handleUpdateColumns(TableColumns(measurement))
     ])
     this.updateTableData(SearchStatus.UpdatingMeasurement)
   }

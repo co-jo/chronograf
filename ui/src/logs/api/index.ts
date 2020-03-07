@@ -41,6 +41,7 @@ export const updateLogConfig = async (
   url: string,
   logConfig: ServerLogConfig
 ) => {
+  console.log("UPDATE")
   try {
     return await AJAX({
       method: 'PUT',

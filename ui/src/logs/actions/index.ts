@@ -12,7 +12,7 @@ import {
   buildInfiniteScrollLogQuery,
   parseHistogramQueryResponse,
 } from 'src/logs/utils'
-import {TableColumnSwitch} from 'src/logs/utils/measurements'
+import {TableColumns} from 'src/logs/utils/columns'
 import {logConfigServerToUI, logConfigUIToServer} from 'src/logs/utils/config'
 import {getDeep} from 'src/utils/wrappers'
 import {
@@ -697,7 +697,7 @@ export const setHistogramQueryConfigAsync = () => async (
 
   const measurement = getDeep<Measurement | null>(state, 'logs.currentMeasurement', null)
 
-  if (timeRange && namespace) {
+  if (timeRange && namespace && measurement) {
     const queryTimeRange = {
       upper: timeRange.upper,
       lower: timeRange.lower,
@@ -782,13 +782,13 @@ export const fetchOlderChunkAsync = () => async (
       response,
       'results.0.series.0',
       {
-        columns: TableColumnSwitch(measurement),
+        columns: TableColumns(measurement),
         values: []
       }
     )
 
     if (!_.isEmpty(response.results[0])) {
-      console.log(response)
+      //console.log(response)
     }
     await dispatch(concatMoreLogs(logSeries))
   } else {
@@ -838,13 +838,13 @@ export const fetchNewerChunkAsync = () => async (
       response,
       'results.0.series.0',
        {
-        columns: TableColumnSwitch(measurement),
+        columns: TableColumns(measurement),
         values: []
       }
     )
 
     if (!_.isEmpty(response.results[0])) {
-      console.log(response)
+      //console.log(response)
     }
 
     await dispatch(prependMoreLogs(logSeries))
@@ -867,6 +867,7 @@ export const flushTailBuffer = () => (
   const combinedBackward = combineTableData(currentTailBuffer, currentBackward)
 
   dispatch(setTableBackwardData(combinedBackward))
+  // TODO
   dispatch(setTableForwardData(defaultTableData))
 }
 
@@ -913,6 +914,7 @@ export const fetchTailAsync = () => async (
       namespace,
       `${query} ORDER BY time DESC`
     )
+    // TODO
     const logSeries = getDeep<TableData>(
       response,
       'results.0.series.0',
@@ -1106,12 +1108,15 @@ export const getLogConfigAsync = (url: string) => async (
 
   try {
     const {data} = await getLogConfigAJAX(url)
-
+   
+    console.log(data)
+    console.log(logConfigServerToUI(data))
     const logConfig = {
       ...logConfigServerToUI(data),
       isTruncated,
     }
-
+    
+    console.log(logConfig)
     await dispatch(setConfig(logConfig))
   } catch (error) {
     console.error(error)

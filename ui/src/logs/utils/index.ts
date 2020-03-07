@@ -34,7 +34,7 @@ const histogramFields = [
   },
 ]
 
-const tableMeasurementFields = {
+const configFields = {
   "pravega-controller": [
     { alias: 'severity', type: 'field', value: 'severity', },
     { alias: 'appname', type: 'field', value: 'appname', },
@@ -319,8 +319,8 @@ export const buildTableQueryConfig = (
     retentionPolicy,
     groupBy: {tags: []},
     measurement: measurement.text,
-    //fields: _.get(tableMeasurementFields, `${measurement.text}`, tableFields),
-    fields: tableFields,
+    fields: _.get(configFields, `${measurement.text}`, tableFields),
+    //fields: tableFields,
     fill: null,
   }
 }
