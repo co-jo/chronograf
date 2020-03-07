@@ -84,6 +84,8 @@ class LoadingStatus extends PureComponent<Props> {
         return 'Updating search filters...'
       case SearchStatus.NoResults:
         return 'No logs found'
+      case SearchStatus.UpdatingMeasurement:
+        return 'Searching updated measurement...'
       case SearchStatus.UpdatingTimeBounds:
         return 'Searching time bounds...'
       case SearchStatus.UpdatingSource:

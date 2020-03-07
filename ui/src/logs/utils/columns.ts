@@ -4,7 +4,7 @@ import { SeverityLevelOptions, SeverityColorOptions } from 'src/logs/constants'
 import { Measurement } from 'src/types'
 import { get } from 'lodash'
 
-const ColumnMap = {
+export const ColumnMap = {
     "pravega-controller": {
         columns: [
             "time",
@@ -49,7 +49,6 @@ const ColumnMap = {
         columns: [
             'time',
             'severity',
-            'timestamp',
             'message',
             'facility',
             'procid',
@@ -186,11 +185,6 @@ const DefaultTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "timestamp",
-            displayName: "Timestamp",
-            visible: true,
-        },
-        {
             internalName: "message",
             displayName: "Message",
             visible: true,
@@ -274,7 +268,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "hidden",
+                    value: "visible",
                 }
             ]
         },
@@ -337,18 +331,8 @@ const DefaultServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "timestamp",
-            position: 2,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
-                }
-            ]
-        },
-        {
             name: "message",
-            position: 3,
+            position: 2,
             encodings: [
                 {
                     type: "visibility",
@@ -358,7 +342,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
         },
         {
             name: "facility",
-            position: 4,
+            position: 3,
             encodings: [
                 {
                     type: "visibility",
@@ -368,7 +352,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
         },
         {
             name: "procid",
-            position: 5,
+            position: 4,
             encodings: [
                 {
                     type: "visibility",
@@ -382,7 +366,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
         },
         {
             name: "appname",
-            position: 6,
+            position: 5,
             encodings: [
                 {
                     type: "visibility",
@@ -396,7 +380,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
         },
         {
             name: "hostname",
-            position: 7,
+            position: 6,
             encodings: [
                 {
                     type: "visibility",
@@ -406,7 +390,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
         },
         {
             name: "host",
-            position: 8,
+            position: 7,
             encodings: [
                 {
                     type: "visibility",

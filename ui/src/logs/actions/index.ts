@@ -787,9 +787,6 @@ export const fetchOlderChunkAsync = () => async (
       }
     )
 
-    if (!_.isEmpty(response.results[0])) {
-      //console.log(response)
-    }
     await dispatch(concatMoreLogs(logSeries))
   } else {
     throw new Error(
@@ -842,10 +839,6 @@ export const fetchNewerChunkAsync = () => async (
         values: []
       }
     )
-
-    if (!_.isEmpty(response.results[0])) {
-      //console.log(response)
-    }
 
     await dispatch(prependMoreLogs(logSeries))
   } else {
@@ -1078,7 +1071,7 @@ export const populateMeasurementsAsync = () => async (
   const measurements = result.map(
     measurement => ({ text: _.head(measurement) })
   )
-
+ 
   await Promise.all([
     dispatch(setMeasurements(measurements)),
     dispatch(setMeasurementAsync(_.first(measurements))),
@@ -1109,14 +1102,11 @@ export const getLogConfigAsync = (url: string) => async (
   try {
     const {data} = await getLogConfigAJAX(url)
    
-    console.log(data)
-    console.log(logConfigServerToUI(data))
     const logConfig = {
       ...logConfigServerToUI(data),
       isTruncated,
     }
     
-    console.log(logConfig)
     await dispatch(setConfig(logConfig))
   } catch (error) {
     console.error(error)

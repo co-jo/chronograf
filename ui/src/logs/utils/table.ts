@@ -29,7 +29,7 @@ export const getColumnFromData = (data: TableData, index: number): string =>
 
 export const isClickable = (column: string): boolean =>
   _.includes(
-    ['appname', 'facility', 'host', 'hostname', 'severity', 'procid'],
+    ['appname', 'facility', 'host', 'hostname', 'severity', 'procid', 'class', 'thread'],
     column
   )
 
@@ -41,6 +41,8 @@ export const formatColumnValue = (
   switch (column) {
     case 'timestamp':
       return moment(+value / 1000000).format(DEFAULT_TIME_FORMAT)
+    case 'time':
+      return moment(+value).format(DEFAULT_TIME_FORMAT)
     case 'procid':
     case 'host':
     case 'hostname':
@@ -84,6 +86,9 @@ export const getColumnWidth = (column: string): number => {
       severity_text: 120,
       severity_dotText: 120,
       host: 300,
+      class: 120,
+      thread: 120,
+      appname: 160,
     },
     column,
     DEFAULT_COLUMN_WIDTH

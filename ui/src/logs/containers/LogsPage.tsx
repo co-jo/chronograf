@@ -5,7 +5,7 @@ import _ from 'lodash'
 import {connect} from 'react-redux'
 import {AutoSizer} from 'react-virtualized'
 import {withRouter, InjectedRouter} from 'react-router'
-import {TableColumns} from 'src/logs/utils/columns'
+import {UITableColumns, TableColumns} from 'src/logs/utils/columns'
 
 // Components
 import LogsHeader from 'src/logs/components/LogsHeader'
@@ -604,14 +604,15 @@ class LogsPage extends Component<Props, State> {
       this.props.tableInfiniteData.forward,
       this.tableColumns
     )
-   
     const backwardData = applyChangesToTableData(
       this.props.tableInfiniteData.backward,
       this.tableColumns
     )
 
     const data = {
-      columns: forwardData.columns,
+      // Note: High potential for rendering issues. If there is no forward data, the new columnset will never be updated.
+      // Fallback to backwardData instead.
+      columns: TableColumns(this.props.currentMeasurement),
       values: [...forwardData.values, ...backwardData.values],
     }
     return data
@@ -920,9 +921,9 @@ class LogsPage extends Component<Props, State> {
       this.props.setMeasurementAsync(measurement),
       this.props.fetchNamespaceVariableStatusAsync(measurement),
       // Sets the /logviewer config json.
-      this.handleUpdateColumns(TableColumns(measurement))
+      this.handleUpdateColumns(UITableColumns[`${measurement.text}`])
     ])
-    this.updateTableData(SearchStatus.UpdatingMeasurement)
+    this.updateTableData(SearchStatus.Loading)
   }
 
   private handleChooseNamespace = async (namespace: Namespace) => {
