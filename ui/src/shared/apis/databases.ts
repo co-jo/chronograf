@@ -40,9 +40,14 @@ export const getDatabasesWithRetentionPolicies = async (
   proxy: string
 ): Promise<Namespace[]> => {
   try {
+
+    console.log(proxy)
     const {data} = await showDatabases(proxy)
+    console.log(data)
     const {databases} = showDatabasesParser(data)
+    console.log(databases)
     const namespaces = await getRetentionPolices(proxy, databases)
+    console.log(namespaces)
 
     const sorted = _.sortBy(namespaces, ({database}: Namespace) =>
       database.toLowerCase()

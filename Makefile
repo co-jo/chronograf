@@ -54,7 +54,7 @@ docker-${BINARY}: $(SOURCES)
 		./cmd/chronograf/main.go
 
 docker: dep assets docker-${BINARY}
-	docker build -t chronograf .
+	docker build -t docker.io/hrynic/chronograf .
 
 assets: .jssrc .bindata
 

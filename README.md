@@ -231,3 +231,7 @@ The swagger JSON document is in `server/swagger.json`
 
 Please see the [contributing guide](CONTRIBUTING.md) for details on contributing
 to Chronograf.
+
+## Known Bugs
+
+* If there is no measurement within the InfluxDB, the log view will not render.
