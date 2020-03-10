@@ -734,7 +734,7 @@ export const setTableQueryConfigAsync = () => async (
   )
   const timeRange = getDeep<TimeRange | null>(state, 'logs.timeRange', null)
   const measurement = getDeep<Measurement | null>(state, 'logs.currentMeasurement', null)
-  if (timeRange && namespace) {
+  if (timeRange && namespace && measurement) {
     const queryConfig = buildTableQueryConfig(namespace, timeRange, measurement)
 
     dispatch(setTableQueryConfig(queryConfig))

@@ -613,6 +613,7 @@ class LogsPage extends Component<Props, State> {
       // Note: High potential for rendering issues. If there is no forward data, the new columnset will never be updated.
       // Fallback to backwardData instead.
       columns: TableColumns(this.props.currentMeasurement),
+      //columns: forwardData.columns,
       values: [...forwardData.values, ...backwardData.values],
     }
     return data

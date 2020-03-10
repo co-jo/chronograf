@@ -56,7 +56,7 @@ export const ColumnMap = {
             'hostname',
             'host',
         ],
-        values: [],
+        values: []
     }
 }
 
@@ -838,8 +838,14 @@ export const ServerLogConfigMap = {
 }
 
 export const TableColumns = (measurement: Measurement): string[] => {
+    if (measurement == null) {
+        return ColumnMap["default"].columns
+    }
     return get(ColumnMap, `${measurement.text}.columns`, ColumnMap["default"].columns)
 }
 export const TableValues = (measurement: Measurement): any[] => {
+    if (measurement == null) {
+        return ColumnMap["default"].values
+    }
     return get(ColumnMap, `${measurement.text}.values`, ColumnMap["default"].values)
 }

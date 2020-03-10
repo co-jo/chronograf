@@ -234,4 +234,4 @@ to Chronograf.
 
 ## Known Bugs
 
-* If there is no measurement within the InfluxDB, the log view will not render.
+* Often one needs to double select the dropbown items for the views to refresh.
