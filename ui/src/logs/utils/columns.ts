@@ -318,7 +318,7 @@ const DefaultServerLogConfig : ServerLogConfig = {
         },
         {
             name: "appname",
-            position: 5,
+            position: 3,
             encodings: [
                 {
                     type: "visibility",
