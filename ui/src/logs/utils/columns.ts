@@ -4,6 +4,7 @@ import { SeverityLevelOptions, SeverityColorOptions } from 'src/logs/constants'
 import { Measurement } from 'src/types'
 import { get } from 'lodash'
 
+// Ordering of columns must be very consistent.
 export const ColumnMap = {
     "pravega-controller": {
         columns: [
@@ -49,8 +50,8 @@ export const ColumnMap = {
         columns: [
             'time',
             'severity',
-            'message',
             'appname',
+            'message',
         ],
         values: []
     }
@@ -172,7 +173,7 @@ const ZookeeperOperatorTableColumns : LogsTableColumn[] = [
 const DefaultTableColumns : LogsTableColumn[] = [
         {
             internalName: "time",
-            displayName: "Time",
+            displayName: "Timestamp",
             visible: true,
         },
         {
@@ -181,13 +182,13 @@ const DefaultTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "message",
-            displayName: "Message",
+            internalName: "appname",
+            displayName: "Application",
             visible: true,
         },
         {
-            internalName: "appname",
-            displayName: "Application",
+            internalName: "message",
+            displayName: "Message",
             visible: true,
         },
 
@@ -208,31 +209,31 @@ export const DefaultSeverityColors: SeverityLevelColor[] = [
     },
     {
     	color: SeverityColorOptions.fire,
-           level: SeverityLevelOptions.alert,
+        level: SeverityLevelOptions.alert,
     },
     {
     	color: SeverityColorOptions.curacao,
-           level: SeverityLevelOptions.crit,
+        level: SeverityLevelOptions.crit,
     },
     {
     	color: SeverityColorOptions.tiger,
-           level: SeverityLevelOptions.err,
+        level: SeverityLevelOptions.err,
     },
     {
     	color: SeverityColorOptions.pineapple,
-           level: SeverityLevelOptions.warning,
+        level: SeverityLevelOptions.warning,
     },
     {
     	color: SeverityColorOptions.rainforest,
-           level: SeverityLevelOptions.notice,
+        level: SeverityLevelOptions.notice,
     },
     {
     	color: SeverityColorOptions.star,
-           level: SeverityLevelOptions.info,
+        level: SeverityLevelOptions.info,
     },
     {
     	color: SeverityColorOptions.wolf,
-           level: SeverityLevelOptions.debug,
+        level: SeverityLevelOptions.debug,
     },
 ]
 
@@ -307,18 +308,8 @@ const DefaultServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "message",
-            position: 2,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visable",
-                }
-            ]
-        },
-        {
             name: "appname",
-            position: 3,
+            position: 2,
             encodings: [
                 {
                     type: "visibility",
@@ -327,6 +318,16 @@ const DefaultServerLogConfig : ServerLogConfig = {
                 {
                     type: "displayName",
                     value: "Application",
+                }
+            ]
+        },
+        {
+            name: "message",
+            position: 3,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
                 }
             ]
         },
@@ -341,7 +342,7 @@ const PravegaControllerServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "hidden",
+                    value: "visible",
                 }
             ]
         },
@@ -409,7 +410,7 @@ const PravegaControllerServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "visable",
+                    value: "visible",
                 },
                 {
                     type: "displayName",
@@ -526,7 +527,7 @@ const ZookeeperServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "visable",
+                    value: "visible",
                 },
                 {
                     type: "displayName",
@@ -575,7 +576,7 @@ const PravegaOperatorServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "hidden",
+                    value: "visible",
                 }
             ]
         },
@@ -643,7 +644,7 @@ const PravegaOperatorServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "visable",
+                    value: "visible",
                 },
                 {
                     type: "displayName",
@@ -672,7 +673,7 @@ const ZookeeperOperatorServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "hidden",
+                    value: "visible",
                 }
             ]
         },
@@ -740,7 +741,7 @@ const ZookeeperOperatorServerLogConfig : ServerLogConfig = {
             encodings: [
                 {
                     type: "visibility",
-                    value: "visable",
+                    value: "visible",
                 },
                 {
                     type: "displayName",

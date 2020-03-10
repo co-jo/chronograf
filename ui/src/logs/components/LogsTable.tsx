@@ -504,7 +504,7 @@ class LogsTable extends Component<Props, State> {
       formattedValue = this.renderMessage(formattedValue as string)
     }
 
-    if (column === 'timestamp') {
+    if (column === 'time') {
       return (
         <div
           className="logs-viewer--cell"

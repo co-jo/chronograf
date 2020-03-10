@@ -1035,8 +1035,6 @@ export const populateNamespacesAsync = (
 
   const namespaces = await getDatabasesWithRetentionPolicies(proxyLink)
   
-  console.log(namespaces)
-
   if (namespaces && namespaces.length > 0) {
     dispatch(setNamespaces(namespaces))
 

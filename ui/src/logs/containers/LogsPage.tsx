@@ -5,7 +5,7 @@ import _ from 'lodash'
 import {connect} from 'react-redux'
 import {AutoSizer} from 'react-virtualized'
 import {withRouter, InjectedRouter} from 'react-router'
-import {UITableColumns, TableColumns} from 'src/logs/utils/columns'
+import {UITableColumns, TableColumns, DefaultSeverityColors} from 'src/logs/utils/columns'
 
 // Components
 import LogsHeader from 'src/logs/components/LogsHeader'
@@ -922,7 +922,7 @@ class LogsPage extends Component<Props, State> {
       this.props.setMeasurementAsync(measurement),
       this.props.fetchNamespaceVariableStatusAsync(measurement),
       // Sets the /logviewer config json.
-      this.handleUpdateColumns(UITableColumns[`${measurement.text}`])
+      this.handleUpdateColumns(_.get(UITableColumns, `${measurement.text}`, UITableColumns["default"]))
     ])
     this.updateTableData(SearchStatus.Loading)
   }
@@ -1015,6 +1015,11 @@ class LogsPage extends Component<Props, State> {
     tableColumns: LogsTableColumn[]
   ): Promise<void> => {
     const {logConfig} = this.props
+
+    if (_.isEmpty(logConfig.severityLevelColors)) {
+      logConfig.severityLevelColors = DefaultSeverityColors
+    }
+
     await this.props.updateConfig(this.logConfigLink, {
       ...logConfig,
       tableColumns,
