@@ -50,11 +50,7 @@ export const ColumnMap = {
             'time',
             'severity',
             'message',
-            'facility',
-            'procid',
             'appname',
-            'hostname',
-            'host',
         ],
         values: [],
     }
@@ -190,28 +186,8 @@ const DefaultTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "facility",
-            displayName: "Facility",
-            visible: true,
-        },
-        {
-            internalName: "procid",
-            displayName: "ProcID",
-            visible: true,
-        },
-        {
             internalName: "appname",
             displayName: "Application",
-            visible: true,
-        },
-        {
-            internalName: "host",
-            displayName: "Host",
-            visible: true,
-        },
-        {
-            internalName: "hostname",
-            displayName: "Hostname",
             visible: true,
         },
 
@@ -341,30 +317,6 @@ const DefaultServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "facility",
-            position: 3,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
-                }
-            ]
-        },
-        {
-            name: "procid",
-            position: 4,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
-                },
-                {
-                    type: "displayName",
-                    value: "Proc ID",
-                }
-            ]
-        },
-        {
             name: "appname",
             position: 5,
             encodings: [
@@ -375,26 +327,6 @@ const DefaultServerLogConfig : ServerLogConfig = {
                 {
                     type: "displayName",
                     value: "Application",
-                }
-            ]
-        },
-        {
-            name: "hostname",
-            position: 6,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
-                }
-            ]
-        },
-        {
-            name: "host",
-            position: 7,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
                 }
             ]
         },
