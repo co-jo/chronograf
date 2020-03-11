@@ -71,7 +71,7 @@ const PravegaControllerTableColumns : LogsTableColumn[] = [
         },
         {
             internalName: "appname",
-            displayName: "Application",
+            displayName: "Pod Name",
             visible: true,
         },
         {
@@ -104,7 +104,7 @@ const PravegaOperatorTableColumns : LogsTableColumn[] = [
         },
         {
             internalName: "appname",
-            displayName: "Application",
+            displayName: "Pod Name",
             visible: true,
         },
         {
@@ -127,7 +127,7 @@ const ZookeeperTableColumns : LogsTableColumn[] = [
         },
         {
             internalName: "appname",
-            displayName: "Application",
+            displayName: "Pod Name",
             visible: true,
         },
         {
@@ -160,7 +160,7 @@ const ZookeeperOperatorTableColumns : LogsTableColumn[] = [
         },
         {
             internalName: "appname",
-            displayName: "Application",
+            displayName: "Pod Name",
             visible: true,
         },
         {
@@ -183,7 +183,7 @@ const DefaultTableColumns : LogsTableColumn[] = [
         },
         {
             internalName: "appname",
-            displayName: "Application",
+            displayName: "Pod Name",
             visible: true,
         },
         {
@@ -197,7 +197,7 @@ const DefaultTableColumns : LogsTableColumn[] = [
 export const UITableColumns =  {
     "pravega-controller": PravegaControllerTableColumns,
     "pravega-operator": PravegaOperatorTableColumns,
-    "zookeeper": ZookeeperOperatorTableColumns,
+    "zookeeper": ZookeeperTableColumns,
     "zookeeper-operator": ZookeeperOperatorTableColumns,
     "default": DefaultTableColumns,
 } 

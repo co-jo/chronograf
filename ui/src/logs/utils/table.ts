@@ -86,8 +86,8 @@ export const getColumnWidth = (column: string): number => {
       severity_text: 120,
       severity_dotText: 120,
       host: 300,
-      class: 120,
-      thread: 120,
+      class: 160,
+      thread: 160,
       appname: 160,
     },
     column,
@@ -179,6 +179,7 @@ export const applyChangesToTableData = (
 ): TableData => {
   const columns = _.get(tableData, 'columns', [])
   const values = _.get(tableData, 'values', [])
+  // NOTE: Why not just use the columns from the TableData?
   const data = [columns, ...values]
 
   const filteredData = filterTableColumns(data, tableColumns)

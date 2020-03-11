@@ -235,8 +235,8 @@ export const defaultTableData: TableData = {
   columns: [
     'time',
     'severity',
-    'message',
     'appname',
+    'message',
   ],
   values: [],
 }

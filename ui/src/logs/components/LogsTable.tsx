@@ -384,6 +384,7 @@ class LogsTable extends Component<Props, State> {
   private getColumnWidth = ({index}: {index: number}): number => {
     const {severityFormat} = this.props
     const column = getColumnFromData(this.props.data, index)
+    // this.props.data.values
     const {
       currentMessageWidth,
       isMessageVisible,
