@@ -931,8 +931,8 @@ class LogsPage extends Component<Props, State> {
     this.updateTableData(SearchStatus.Cleared)
 
     await Promise.all([
-      this.props.populateMeasurementsAsync(),
       this.props.setNamespaceAsync(namespace),
+      this.props.populateMeasurementsAsync(),
       this.props.fetchNamespaceSyslogStatusAsync(namespace),
     ])
 
