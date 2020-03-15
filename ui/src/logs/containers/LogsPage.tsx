@@ -231,9 +231,9 @@ class LogsPage extends Component<Props, State> {
   public async componentDidMount() {
     await this.getSources()
     await this.setCurrentSource()
-    await this.setCurrentMeasurement()
 
     await this.props.getSourceAndPopulateNamespaces(this.sourceId)
+    await this.setCurrentMeasurement()
     await this.props.getConfig(this.logConfigLink)
 
     if (this.isMeasurementInNamespace) {
