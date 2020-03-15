@@ -233,6 +233,7 @@ class LogsPage extends Component<Props, State> {
     await this.setCurrentSource()
     await this.setCurrentMeasurement()
 
+    await this.props.getSourceAndPopulateNamespaces(this.sourceId)
     await this.props.getConfig(this.logConfigLink)
 
     if (this.isMeasurementInNamespace) {
@@ -621,6 +622,10 @@ class LogsPage extends Component<Props, State> {
 
   private get logConfigLink(): string {
     return this.props.logConfigLink
+  }
+
+  private get sourceId() : string{
+    return this.props.currentSource.id
   }
 
   private get tableColumns(): LogsTableColumn[] {
