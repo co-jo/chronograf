@@ -10,10 +10,10 @@ export const ColumnMap = {
         columns: [
             "time",
             "severity",
-            "appname",
+            "message",
             "class",
             "thread",
-            "message",
+            "appname",
         ],
         values: []
     },
@@ -21,10 +21,10 @@ export const ColumnMap = {
         columns: [
             "time",
             "severity",
-            "appname",
+            "message",
             "class",
             "thread",
-            "message",
+            "appname",
         ],
         values: []
     },
@@ -32,8 +32,8 @@ export const ColumnMap = {
         columns: [
             "time",
             "severity",
-            "appname",
             "message",
+            "appname",
         ],
         values: []
     },
@@ -41,8 +41,8 @@ export const ColumnMap = {
         columns: [
             "time",
             "severity",
-            "appname",
             "message",
+            "appname",
         ],
         values: []
     },
@@ -50,8 +50,8 @@ export const ColumnMap = {
         columns: [
             'time',
             'severity',
-            'appname',
             'message',
+            'appname',
         ],
         values: []
     }
@@ -70,8 +70,8 @@ const PravegaControllerTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "appname",
-            displayName: "Pod Name",
+            internalName: "message",
+            displayName: "Message",
             visible: true,
         },
         {
@@ -85,10 +85,10 @@ const PravegaControllerTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "message",
-            displayName: "Message",
+            internalName: "appname",
+            displayName: "Pod Name",
             visible: true,
-        }
+        },
 ]
 
 const PravegaOperatorTableColumns : LogsTableColumn[] = [
@@ -103,13 +103,13 @@ const PravegaOperatorTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "appname",
-            displayName: "Pod Name",
+            internalName: "message",
+            displayName: "Message",
             visible: true,
         },
         {
-            internalName: "message",
-            displayName: "Message",
+            internalName: "appname",
+            displayName: "Pod Name",
             visible: true,
         },
 ]
@@ -126,8 +126,8 @@ const ZookeeperTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "appname",
-            displayName: "Pod Name",
+            internalName: "message",
+            displayName: "Message",
             visible: true,
         },
         {
@@ -141,10 +141,10 @@ const ZookeeperTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "message",
-            displayName: "Message",
+            internalName: "appname",
+            displayName: "Pod Name",
             visible: true,
-        }
+        },
 ]
 
 const ZookeeperOperatorTableColumns : LogsTableColumn[] = [
@@ -159,13 +159,13 @@ const ZookeeperOperatorTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "appname",
-            displayName: "Pod Name",
+            internalName: "message",
+            displayName: "Message",
             visible: true,
         },
         {
-            internalName: "message",
-            displayName: "Message",
+            internalName: "appname",
+            displayName: "Pod Name",
             visible: true,
         },
 ]
@@ -182,13 +182,13 @@ const DefaultTableColumns : LogsTableColumn[] = [
             visible: true,
         },
         {
-            internalName: "appname",
-            displayName: "Pod Name",
+            internalName: "message",
+            displayName: "Message",
             visible: true,
         },
         {
-            internalName: "message",
-            displayName: "Message",
+            internalName: "appname",
+            displayName: "Pod Name",
             visible: true,
         },
 
@@ -308,8 +308,18 @@ const DefaultServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "appname",
+            name: "message",
             position: 2,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                }
+            ]
+        },
+        {
+            name: "appname",
+            position: 3,
             encodings: [
                 {
                     type: "visibility",
@@ -318,16 +328,6 @@ const DefaultServerLogConfig : ServerLogConfig = {
                 {
                     type: "displayName",
                     value: "Application",
-                }
-            ]
-        },
-        {
-            name: "message",
-            position: 3,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
                 }
             ]
         },
@@ -405,16 +405,12 @@ const PravegaControllerServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "appname",
+            name: "message",
             position: 2,
             encodings: [
                 {
                     type: "visibility",
                     value: "visible",
-                },
-                {
-                    type: "displayName",
-                    value: "Application"
                 },
             ]
         },
@@ -439,12 +435,16 @@ const PravegaControllerServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "message",
+            name: "appname",
             position: 5,
             encodings: [
                 {
                     type: "visibility",
                     value: "visible",
+                },
+                {
+                    type: "displayName",
+                    value: "Application"
                 },
             ]
         },
@@ -522,16 +522,12 @@ const ZookeeperServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "appname",
+            name: "message",
             position: 2,
             encodings: [
                 {
                     type: "visibility",
                     value: "visible",
-                },
-                {
-                    type: "displayName",
-                    value: "Application"
                 },
             ]
         },
@@ -556,12 +552,16 @@ const ZookeeperServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "message",
+            name: "appname",
             position: 5,
             encodings: [
                 {
                     type: "visibility",
                     value: "visible",
+                },
+                {
+                    type: "displayName",
+                    value: "Application"
                 },
             ]
         },
@@ -639,8 +639,18 @@ const PravegaOperatorServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "appname",
+            name: "message",
             position: 2,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                },
+            ]
+        },
+        {
+            name: "appname",
+            position: 3,
             encodings: [
                 {
                     type: "visibility",
@@ -649,16 +659,6 @@ const PravegaOperatorServerLogConfig : ServerLogConfig = {
                 {
                     type: "displayName",
                     value: "Application"
-                },
-            ]
-        },
-        {
-            name: "message",
-            position: 3,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
                 },
             ]
         },
@@ -736,8 +736,18 @@ const ZookeeperOperatorServerLogConfig : ServerLogConfig = {
             ]
         },
         {
-            name: "appname",
+            name: "message",
             position: 2,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                },
+            ]
+        },
+        {
+            name: "appname",
+            position: 3,
             encodings: [
                 {
                     type: "visibility",
@@ -746,16 +756,6 @@ const ZookeeperOperatorServerLogConfig : ServerLogConfig = {
                 {
                     type: "displayName",
                     value: "Application"
-                },
-            ]
-        },
-        {
-            name: "message",
-            position: 3,
-            encodings: [
-                {
-                    type: "visibility",
-                    value: "visible",
                 },
             ]
         },

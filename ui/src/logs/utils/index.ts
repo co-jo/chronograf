@@ -38,32 +38,32 @@ const histogramFields = [
 const configFields = {
   "pravega-controller": [
     { alias: 'severity', type: 'field', value: 'severity', },
-    { alias: 'appname', type: 'field', value: 'appname', },
+    { alias: 'message', type: 'field', value: 'message', }
     { alias: 'class', type: 'field', value: 'class', },
     { alias: 'thread', type: 'field', value: 'thread', },
-    { alias: 'message', type: 'field', value: 'message', }
+    { alias: 'appname', type: 'field', value: 'appname', },
   ],
   "pravega-operator": [
     { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
     { alias: 'message', type: 'field', value: 'message' }
+    { alias: 'appname', type: 'field', value: 'appname' },
   ],
   "zookeeper": [
     { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
+    { alias: 'message', type: 'field', value: 'message' }
     { alias: 'class', type: 'field', value: 'class' },
     { alias: 'thread', type: 'field', value: 'thread' },
-    { alias: 'message', type: 'field', value: 'message' }
+    { alias: 'appname', type: 'field', value: 'appname' },
   ],
   "zookeeper-operator": [
     { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
     { alias: 'message', type: 'field', value: 'message' }
+    { alias: 'appname', type: 'field', value: 'appname' },
   ],
   "default": [
     { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
     { alias: 'message', type: 'field', value: 'message' },
+    { alias: 'appname', type: 'field', value: 'appname' },
   ]
 }
 
