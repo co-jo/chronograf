@@ -478,10 +478,7 @@ class LogsTable extends Component<Props, State> {
       severityFormat === SeverityFormatOptions.dot ||
       severityFormat === SeverityFormatOptions.dotText
 
-    let title: string
-
     if (column === 'severity' && isDotNeeded) {
-      title = value
       const colorLevel =
         severityLevelColors.find(lc => lc.level === value) ||
         severityLevelColors[0]
@@ -498,7 +495,6 @@ class LogsTable extends Component<Props, State> {
       )
     } else {
       formattedValue = formatColumnValue(column, value, this.rowCharLimit)
-      title = formattedValue
     }
 
     if (column === 'message') {
@@ -531,7 +527,7 @@ class LogsTable extends Component<Props, State> {
       return (
         <div
           className="logs-viewer--cell"
-          title={`Filter by '${title}'`}
+          title={`Filter by '${value}'`}
           key={key}
           style={style}
           data-index={rowIndex}
