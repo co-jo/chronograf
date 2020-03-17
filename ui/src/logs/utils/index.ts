@@ -36,7 +36,7 @@ const histogramFields = [
 
 // Fields that are use in the query builder for InfluxDB.
 const configFields = {
-  'pravega-controller': [
+  "pravega-controller": [
     { 
       alias: 'severity',
       type: 'field',
@@ -63,7 +63,7 @@ const configFields = {
       value: 'message'
     },
   ],
-  'pravega-segmentstore': [
+  "pravega-segmentstore": [
     { 
       alias: 'severity',
       type: 'field',
@@ -90,7 +90,7 @@ const configFields = {
       value: 'message'
     },
   ],
-  'pravega-operator': [
+  "pravega-operator": [
     { 
       alias: 'severity',
       type: 'field',
@@ -107,7 +107,7 @@ const configFields = {
       value: 'message'
     },
   ],
-  zookeeper: [
+  "zookeeper": [
     { 
       alias: 'severity',
       type: 'field',
@@ -134,7 +134,7 @@ const configFields = {
       value: 'message'
     },
   ],
-  'zookeeper-operator': [
+  "zookeeper-operator": [
     { 
       alias: 'severity',
       type: 'field',
@@ -151,7 +151,7 @@ const configFields = {
       value: 'message'
     },
   ],
-  default: [
+  "default": [
     { 
       alias: 'severity',
       type: 'field',
@@ -407,7 +407,7 @@ export const buildTableQueryConfig = (
     retentionPolicy,
     groupBy: {tags: []},
     measurement: measurement.text,
-    fields: _.get(configFields, `${measurement.text}`, configFields['default']),
+    fields: _.get(configFields, `${measurement.text}`, configFields["default"]),
     //fields: tableFields,
     fill: null,
   }
@@ -453,11 +453,15 @@ export const formatTime = (time: number): string => {
   return moment(time).format(DEFAULT_TIME_FORMAT)
 }
 
-export const buildFindMeasurementsQuery = (namespace: Namespace) =>
+export const buildFindMeasurementsQuery = (
+  namespace: Namespace
+) =>
   `SHOW MEASUREMENTS ON "${namespace.database}"`
 
 export const buildFindMeasurementQuery = (
   namespace: Namespace,
   measurement: string
 ) =>
-  `SHOW MEASUREMENTS ON "${namespace.database}" WITH measurement = "${measurement}"`
+  `SHOW MEASUREMENTS ON "${
+    namespace.database
+  }" WITH measurement = "${measurement}"`
