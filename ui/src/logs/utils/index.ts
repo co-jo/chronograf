@@ -36,35 +36,138 @@ const histogramFields = [
 
 // Fields that are use in the query builder for InfluxDB.
 const configFields = {
-  "pravega-controller": [
-    { alias: 'severity', type: 'field', value: 'severity', },
-    { alias: 'appname', type: 'field', value: 'appname', },
-    { alias: 'class', type: 'field', value: 'class', },
-    { alias: 'thread', type: 'field', value: 'thread', },
-    { alias: 'message', type: 'field', value: 'message', }
+  'pravega-controller': [
+    { 
+      alias: 'severity',
+      type: 'field',
+      value: 'severity'
+    },
+    { 
+      alias: 'appname',
+      type: 'field',
+      value: 'appname'
+    },
+    { 
+      alias: 'class',
+      type: 'field',
+      value: 'class'
+    },
+    { 
+      alias: 'thread',
+      type: 'field',
+      value: 'thread'
+    },
+    { 
+      alias: 'message',
+      type: 'field',
+      value: 'message'
+    },
   ],
-  "pravega-operator": [
-    { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
-    { alias: 'message', type: 'field', value: 'message' }
+  'pravega-segmentstore': [
+    { 
+      alias: 'severity',
+      type: 'field',
+      value: 'severity'
+    },
+    { 
+      alias: 'appname',
+      type: 'field',
+      value: 'appname'
+    },
+    { 
+      alias: 'class',
+      type: 'field',
+      value: 'class'
+    },
+    { 
+      alias: 'thread',
+      type: 'field',
+      value: 'thread'
+    },
+    { 
+      alias: 'message',
+      type: 'field',
+      value: 'message'
+    },
   ],
-  "zookeeper": [
-    { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
-    { alias: 'class', type: 'field', value: 'class' },
-    { alias: 'thread', type: 'field', value: 'thread' },
-    { alias: 'message', type: 'field', value: 'message' }
+  'pravega-operator': [
+    { 
+      alias: 'severity',
+      type: 'field',
+      value: 'severity'
+    },
+    { 
+      alias: 'appname',
+      type: 'field',
+      value: 'appname'
+    },
+    { 
+      alias: 'message',
+      type: 'field',
+      value: 'message'
+    },
   ],
-  "zookeeper-operator": [
-    { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
-    { alias: 'message', type: 'field', value: 'message' }
+  zookeeper: [
+    { 
+      alias: 'severity',
+      type: 'field',
+      value: 'severity'
+    },
+    { 
+      alias: 'appname',
+      type: 'field',
+      value: 'appname'
+    },
+    { 
+      alias: 'class',
+      type: 'field',
+      value: 'class'
+    },
+    { 
+      alias: 'thread',
+      type: 'field',
+      value: 'thread'
+    },
+    { 
+      alias: 'message',
+      type: 'field',
+      value: 'message'
+    },
   ],
-  "default": [
-    { alias: 'severity', type: 'field', value: 'severity' },
-    { alias: 'appname', type: 'field', value: 'appname' },
-    { alias: 'message', type: 'field', value: 'message' },
-  ]
+  'zookeeper-operator': [
+    { 
+      alias: 'severity',
+      type: 'field',
+      value: 'severity'
+    },
+    { 
+      alias: 'appname',
+      type: 'field',
+      value: 'appname'
+    },
+    { 
+      alias: 'message',
+      type: 'field',
+      value: 'message'
+    },
+  ],
+  default: [
+    { 
+      alias: 'severity',
+      type: 'field',
+      value: 'severity'
+    },
+    { 
+      alias: 'appname',
+      type: 'field',
+      value: 'appname'
+    },
+    { 
+      alias: 'message',
+      type: 'field',
+      value: 'message'
+    },
+  ],
 }
 
 const defaultQueryConfig = {
@@ -243,7 +346,7 @@ export function buildLogQuery(
   if (!_.isEmpty(filters)) {
     condition = `${condition} AND ${filtersClause(filters)}`
   }
-  
+
   return `${select}${condition}${dimensions}${fillClause}`
 }
 
@@ -304,7 +407,7 @@ export const buildTableQueryConfig = (
     retentionPolicy,
     groupBy: {tags: []},
     measurement: measurement.text,
-    fields: _.get(configFields, `${measurement.text}`, configFields["default"]),
+    fields: _.get(configFields, `${measurement.text}`, configFields['default']),
     //fields: tableFields,
     fill: null,
   }
@@ -350,15 +453,11 @@ export const formatTime = (time: number): string => {
   return moment(time).format(DEFAULT_TIME_FORMAT)
 }
 
-export const buildFindMeasurementsQuery = (
-  namespace: Namespace
-) =>
+export const buildFindMeasurementsQuery = (namespace: Namespace) =>
   `SHOW MEASUREMENTS ON "${namespace.database}"`
 
 export const buildFindMeasurementQuery = (
   namespace: Namespace,
   measurement: string
 ) =>
-  `SHOW MEASUREMENTS ON "${
-    namespace.database
-  }" WITH measurement = "${measurement}"`
+  `SHOW MEASUREMENTS ON "${namespace.database}" WITH measurement = "${measurement}"`

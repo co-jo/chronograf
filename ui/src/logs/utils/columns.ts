@@ -17,6 +17,17 @@ export const ColumnMap = {
         ],
         values: []
     },
+    "pravega-segmentstore": {
+        columns: [
+            "time",
+            "severity",
+            "appname",
+            "class",
+            "thread",
+            "message",
+        ],
+        values: []
+    },
     "zookeeper": {
         columns: [
             "time",
@@ -59,6 +70,38 @@ export const ColumnMap = {
 
 // UI 
 const PravegaControllerTableColumns : LogsTableColumn[] = [
+        {
+            internalName: "time",
+            displayName: "Timestamp",
+            visible: true,
+        },
+        {
+            internalName: "severity",
+            displayName: "Severity",
+            visible: true,
+        },
+        {
+            internalName: "appname",
+            displayName: "Pod Name",
+            visible: true,
+        },
+        {
+            internalName: "class",
+            displayName: "Class",
+            visible: true,
+        },
+        {
+            internalName: "thread",
+            displayName: "Thread",
+            visible: true,
+        },
+        {
+            internalName: "message",
+            displayName: "Message",
+            visible: true,
+        }
+]
+const PravegaSegmentStoreTableColumns : LogsTableColumn[] = [
         {
             internalName: "time",
             displayName: "Timestamp",
@@ -196,6 +239,7 @@ const DefaultTableColumns : LogsTableColumn[] = [
 
 export const UITableColumns =  {
     "pravega-controller": PravegaControllerTableColumns,
+    "pravega-segmentstore": PravegaSegmentStoreTableColumns,
     "pravega-operator": PravegaOperatorTableColumns,
     "zookeeper": ZookeeperTableColumns,
     "zookeeper-operator": ZookeeperOperatorTableColumns,
@@ -335,6 +379,123 @@ const DefaultServerLogConfig : ServerLogConfig = {
 }
 
 const PravegaControllerServerLogConfig : ServerLogConfig = {
+    columns: [
+        {
+            name: "time",
+            position: 0,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                }
+            ]
+        },
+        {
+            name: "severity",
+            position: 1,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible"
+                },
+                {
+                    type: "label",
+                    value: "icon"
+                },
+                {
+                    type: "label",
+                    value: "text"
+                },
+                {
+                    type: "color",
+                    value: "ruby",
+                    name: "emerg"
+                },
+                {
+                    type: "color",
+                    value: "fire",
+                    name: "alert"
+                },
+                {
+                    type: "color",
+                    value: "curacao",
+                    name: "crit"
+                },
+                {
+                    type: "color",
+                    value: "tiger",
+                    name: "err"
+                },
+                {
+                    type: "color",
+                    value: "pineapple",
+                    name: "warning"
+                },
+                {
+                    type: "color",
+                    value: "rainforest",
+                    name: "notice"
+                },
+                {
+                    type: "color",
+                    value: "star",
+                    name: "info"
+                },
+                {
+                    type: "color",
+                    value: "wolf",
+                    name: "debug"
+                }
+            ]
+        },
+        {
+            name: "appname",
+            position: 2,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                },
+                {
+                    type: "displayName",
+                    value: "Application"
+                },
+            ]
+        },
+        {
+            name: "class",
+            position: 3,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                },
+            ]
+        },
+        {
+            name: "thread",
+            position: 4,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                },
+            ]
+        },
+        {
+            name: "message",
+            position: 5,
+            encodings: [
+                {
+                    type: "visibility",
+                    value: "visible",
+                },
+            ]
+        },
+    ]
+}
+
+const PravegaSegmentStoreServerLogConfig : ServerLogConfig = {
     columns: [
         {
             name: "time",
@@ -764,6 +925,7 @@ const ZookeeperOperatorServerLogConfig : ServerLogConfig = {
 
 export const ServerLogConfigMap = {
     "pravega-controller": PravegaControllerServerLogConfig,
+    "pravega-segmentstore": PravegaSegmentStoreServerLogConfig,
     "pravega-operator": PravegaOperatorServerLogConfig,
     "zookeeper": ZookeeperServerLogConfig,
     "zookeeper-operator": ZookeeperOperatorServerLogConfig,
