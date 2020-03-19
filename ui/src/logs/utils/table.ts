@@ -9,8 +9,8 @@ import {
 } from 'src/dashboards/utils/tableGraph'
 
 export const ROW_HEIGHT = 18
-const CHAR_WIDTH = 9
-const DEFAULT_COLUMN_WIDTH = 200
+const CHAR_WIDTH = 8
+const DEFAULT_COLUMN_WIDTH = 160
 
 export const getValuesFromData = (data: TableData): string[][] =>
   getDeep(data, 'values', [])
@@ -54,6 +54,10 @@ export const formatColumnValue = (
         value = _.truncate(value, {length: charLimit - 5})
       }
       return value
+    case 'class':
+      return truncateText(_.last(_.split(value, '.')), column)
+    case 'thread':
+      return truncateText(value, column)
   }
   return value
 }
@@ -71,7 +75,7 @@ export const header = (
 
 const truncateText = (value: string, column: string): string => {
   const columnWidth = getColumnWidth(column)
-  const length = Math.floor(columnWidth / CHAR_WIDTH) - 2
+  const length = Math.floor(columnWidth / CHAR_WIDTH) - 1
 
   return _.truncate(value || '', {length})
 }
@@ -83,8 +87,8 @@ export const getColumnWidth = (column: string): number => {
       procid: 80,
       facility: 120,
       severity_dot: 25,
-      severity_text: 120,
-      severity_dotText: 120,
+      severity_text: 100,
+      severity_dotText: 100,
       host: 300,
       class: 160,
       thread: 160,
