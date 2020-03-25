@@ -276,9 +276,13 @@ export const DefaultSeverityColors: SeverityLevelColor[] = [
         level: SeverityLevelOptions.info,
     },
     {
+        color: SeverityColorOptions.ocean,
+        level: SeverityLevelOptions.trace,
+    },
+    {
     	color: SeverityColorOptions.wolf,
         level: SeverityLevelOptions.debug,
-    },
+    }
 ]
 
 const DefaultServerLogConfig : ServerLogConfig = {
@@ -343,6 +347,11 @@ const DefaultServerLogConfig : ServerLogConfig = {
                     type: "color",
                     value: "star",
                     name: "info"
+                },
+                {
+                    type: "color",
+                    value: "ocean",
+                    name: "trace"
                 },
                 {
                     type: "color",
@@ -440,6 +449,11 @@ const PravegaControllerServerLogConfig : ServerLogConfig = {
                     type: "color",
                     value: "star",
                     name: "info"
+                },
+                {
+                    type: "color",
+                    value: "ocean",
+                    name: "trace"
                 },
                 {
                     type: "color",
@@ -560,6 +574,11 @@ const PravegaSegmentStoreServerLogConfig : ServerLogConfig = {
                 },
                 {
                     type: "color",
+                    value: "ocean",
+                    name: "trace"
+                },
+                {
+                    type: "color",
                     value: "wolf",
                     name: "debug"
                 }
@@ -674,6 +693,11 @@ const ZookeeperServerLogConfig : ServerLogConfig = {
                     type: "color",
                     value: "star",
                     name: "info"
+                },
+                {
+                    type: "color",
+                    value: "ocean",
+                    name: "trace"
                 },
                 {
                     type: "color",
@@ -794,6 +818,11 @@ const PravegaOperatorServerLogConfig : ServerLogConfig = {
                 },
                 {
                     type: "color",
+                    value: "ocean",
+                    name: "trace"
+                },
+                {
+                    type: "color",
                     value: "wolf",
                     name: "debug"
                 }
@@ -888,6 +917,12 @@ const ZookeeperOperatorServerLogConfig : ServerLogConfig = {
                     type: "color",
                     value: "star",
                     name: "info"
+                },
+                {
+
+                    type: "color",
+                    value: "ocean",
+                    name: "trace"
                 },
                 {
                     type: "color",

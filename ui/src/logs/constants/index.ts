@@ -141,6 +141,7 @@ export enum SeverityLevelOptions {
   warning = 'warning',
   notice = 'notice',
   info = 'info',
+  trace = 'trace',
   debug = 'debug',
 }
 
@@ -152,7 +153,8 @@ export const SEVERITY_SORTING_ORDER = {
   [SeverityLevelOptions.warning]: 5,
   [SeverityLevelOptions.notice]: 6,
   [SeverityLevelOptions.info]: 7,
-  [SeverityLevelOptions.debug]: 8,
+  [SeverityLevelOptions.trace]: 8,
+  [SeverityLevelOptions.debug]: 9,
 }
 
 export const DEFAULT_SEVERITY_LEVELS = {
@@ -163,6 +165,7 @@ export const DEFAULT_SEVERITY_LEVELS = {
   [SeverityLevelOptions.warning]: SeverityColorOptions.pineapple,
   [SeverityLevelOptions.notice]: SeverityColorOptions.rainforest,
   [SeverityLevelOptions.info]: SeverityColorOptions.star,
+  [SeverityLevelOptions.trace]: SeverityColorOptions.ocean,
   [SeverityLevelOptions.debug]: SeverityColorOptions.wolf,
 }
 
